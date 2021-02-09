@@ -13,26 +13,6 @@ class HttpClient {
     } catch (error) {
       console.error(error);
     }
-    // return new Promise((resolve, reject) => {
-    //   const url = urlConstructer(this.baseUrl, params);
-    //   https.get(url, (res) => {
-    //     if (res.statusCode !== 200) {
-    //       let error = `Did not get an OK from the server. Code: ${res.statusCode}`;
-    //       console.error(error);
-    //       res.resume();
-    //       return reject(error);
-    //     }
-    //     let data = "";
-    //     res.on("data", (chunk) => {
-    //       data += chunk;
-    //     });
-    //     res.on("close", () => {
-    //       console.log("Retrieved all data");
-    //       // console.log(JSON.parse(data));
-    //       return resolve(JSON.parse(data));
-    //     });
-    //   });
-    // });
   }
 }
 

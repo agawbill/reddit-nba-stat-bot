@@ -16,10 +16,8 @@ export class NbaApi {
   }
 
   async getPlayer(name) {
-    //map to params goes here too
     const { firstName, lastName } = name;
 
-    //maybe outsource to 'dataHandler'
     let page = 1;
     let playerData = [];
     let foundPlayer;
@@ -31,7 +29,6 @@ export class NbaApi {
           { type: "page", value: page },
         ];
 
-        // `?search=${lastName}&page=${page}`; //map to params goes here...
         let { data, meta } = await this.playersClient.get(params);
         if (data && data.length > 0) {
           playerData = [...playerData, ...data];
@@ -76,14 +73,12 @@ export class NbaApi {
   }
 
   async getAverage(player, stats, date) {
-    //this is where mapParams would need to be
     let allStats;
     let matchingStats = [];
 
     const { validStats, invalidStats } = stats;
 
     try {
-      // let param = `?player_ids[]=${player.id}`;
       let params = [
         { type: "player_ids[]", value: player.id },
         { type: "season", value: date },
