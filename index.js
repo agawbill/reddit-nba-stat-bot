@@ -18,8 +18,8 @@ const r = new Snoowrap({
 
 const commentStream = new CommentStream(r, {
   subreddit: "bottesting",
-  results: 50,
-  pollTime: 1000,
+  results: 100,
+  pollTime: 2000,
 });
 
 const nbaApi = new NbaApi();
