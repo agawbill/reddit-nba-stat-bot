@@ -3,7 +3,6 @@ import Snoowrap from "snoowrap";
 import Snoostorm from "snoostorm";
 import { NbaApi } from "./apis/index.js";
 import { getMessage } from "./services/nbaServices.js";
-import http from "http";
 
 const { CommentStream, SubmissionStream } = Snoostorm;
 
@@ -26,13 +25,6 @@ const commentStream = new CommentStream(r, {
 const nbaApi = new NbaApi();
 
 const startTime = Date.now();
-
-http
-  .createServer((req, res) => {
-    res.writeHead(200, { "Content-Type": "text/plain" });
-    res.send("it is running\n");
-  })
-  .listen(process.env.PORT || 5000);
 
 console.log(`Reddit bot started at ${new Date(startTime)}...`);
 
