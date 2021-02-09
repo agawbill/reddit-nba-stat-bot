@@ -35,9 +35,13 @@ commentStream.on("item", async (comment) => {
       comment.body.toLowerCase().includes(`u/${process.env.REDDIT_USER}`));
 
   if (isForBot) {
-    const averages = await nbaApi.getAverages(comment.body);
-    const message = getMessage(averages);
-    console.log(message);
-    comment.reply(message);
+    try {
+      const averages = await nbaApi.getAverages(comment.body);
+      const message = getMessage(averages);
+      console.log(message);
+      comment.reply(message);
+    } catch (error) {
+      console.error(error);
+    }
   }
 });
