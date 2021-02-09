@@ -1,0 +1,22 @@
+{
+  "name": "redditbot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "type": "module",
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "-": "0.0.1",
+    "axios": "^0.21.1",
+    "dotenv": "^8.2.0",
+    "g": "^2.0.1",
+    "npm": "^7.5.2",
+    "snoostorm": "^1.5.2",
+    "snoowrap": "^1.22.0"
+  }
+}
