@@ -35,6 +35,7 @@ export class NbaApi {
         }
         page = meta.next_page;
       } catch (error) {
+        page = null;
         console.error(error);
       }
     } while (page);
