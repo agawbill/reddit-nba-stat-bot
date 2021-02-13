@@ -1,6 +1,6 @@
 import HttpClient from "../utils/httpClient.js";
 import dotenv from "dotenv";
-import { getValues } from "../services/nbaServices.js";
+import { getMessage, getValues } from "../services/nbaServices.js";
 
 dotenv.config();
 
@@ -30,9 +30,11 @@ export class NbaApi {
         ];
 
         let { data, meta } = await this.playersClient.get(params);
+
         if (data && data.length > 0) {
           playerData = [...playerData, ...data];
         }
+
         page = meta.next_page;
       } catch (error) {
         page = null;
@@ -50,6 +52,8 @@ export class NbaApi {
         }
       });
     }
+
+    console.log(foundPlayer);
 
     return foundPlayer;
   }
@@ -86,6 +90,7 @@ export class NbaApi {
       ];
       allStats = (await this.averagesClient.get(params)).data[0];
     } catch (error) {
+      getMessage(undefined);
       console.error(error);
     }
 
@@ -120,6 +125,8 @@ export class NbaApi {
       const { foundPlayers, playersNotFound } = await this.getPlayers(players);
 
       for (const player of foundPlayers) {
+        try {
+        } catch (error) {}
         let foundAverage = await this.getAverage(
           { id: player.id, name: `${player.first_name} ${player.last_name}` },
           stats,

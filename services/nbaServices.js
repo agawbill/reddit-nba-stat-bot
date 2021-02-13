@@ -98,7 +98,7 @@ const messageConstructor = (type, data) => {
               }
               return `${stat.value} ${stat.name} per game, `;
             } else {
-              return `${stat.value} ${stat.name} per game.`;
+              return `${stat.value} ${stat.name} per game. `;
             }
           });
           message += validStats.join("");
