@@ -4,7 +4,7 @@ import Snoostorm from "snoostorm";
 import { NbaApi } from "./apis/index.js";
 import { getMessage } from "./services/nbaServices.js";
 
-const { CommentStream, SubmissionStream } = Snoostorm;
+const { CommentStream } = Snoostorm;
 
 dotenv.config();
 
