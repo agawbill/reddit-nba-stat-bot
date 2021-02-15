@@ -16,12 +16,10 @@ const r = new Snoowrap({
   password: process.env.REDDIT_PASS,
 });
 
-//anything less than 3000 throws intermittent request time out errors.
-
 const commentStream = new CommentStream(r, {
   subreddit: "bottesting",
-  results: 100,
-  pollTime: 3000,
+  limit: 100,
+  pollTime: 2000,
 });
 
 const nbaApi = new NbaApi();
