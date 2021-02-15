@@ -71,10 +71,12 @@ const messageConstructor = (type, data) => {
     case "playersNotFound":
       message = "Sorry, I couldn't find information regarding ";
       data.forEach((player, index) => {
-        let firstName =
-          player.firstName[0].toUpperCase() + player.firstName.slice(1);
-        let lastName =
-          player.lastName[0].toUpperCase() + player.lastName.slice(1);
+        let firstName = player.firstName
+          ? player.firstName[0].toUpperCase() + player.firstName.slice(1)
+          : "";
+        let lastName = player.lastName
+          ? player.lastName[0].toUpperCase() + player.lastName.slice(1)
+          : "";
         if (data.length > 1) {
           if (index === data.length - 1) {
             message += `and ${firstName} ${lastName}.`;
@@ -94,7 +96,7 @@ const messageConstructor = (type, data) => {
           const validStats = player.stats.map((stat, index) => {
             if (player.stats.length > 1) {
               if (index === player.stats.length - 1) {
-                return `and ${stat.value} ${stat.name} per game.`;
+                return `and ${stat.value} ${stat.name} per game. `;
               }
               return `${stat.value} ${stat.name} per game, `;
             } else {
@@ -591,6 +593,13 @@ const mapPlayers = (names) => {
   let players = [];
 
   names.forEach((name) => {
+    name = name.trim();
+    if (!name.match(/^[a-zA-Z]/)) {
+      name = name.slice(1);
+    }
+    if (!name.match(/[a-zA-Z]$/)) {
+      name = name.slice(0, -1);
+    }
     let fullName = name.trim().split(" ");
     const [firstName, lastName] = [
       fullName[0].trim(),
