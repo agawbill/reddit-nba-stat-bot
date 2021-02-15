@@ -16,7 +16,7 @@ const r = new Snoowrap({
   password: process.env.REDDIT_PASS,
 });
 
-//anything less than 3000 throws intermittent request time out errors
+//anything less than 3000 throws intermittent request time out errors.
 
 const commentStream = new CommentStream(r, {
   subreddit: "bottesting",
