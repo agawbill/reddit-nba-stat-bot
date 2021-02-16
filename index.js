@@ -16,6 +16,8 @@ const r = new Snoowrap({
   password: process.env.REDDIT_PASS,
 });
 
+r.config({ continueAfterRatelimitError: true });
+
 const commentStream = new CommentStream(r, {
   subreddit: "bottesting",
   limit: 100,
