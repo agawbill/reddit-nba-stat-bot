@@ -1,4 +1,5 @@
 import dotenv from "dotenv";
+import chalk from "chalk";
 import Snoowrap from "snoowrap";
 import Snoostorm from "snoostorm";
 import { NbaApi } from "./apis/index.js";
@@ -16,8 +17,6 @@ const r = new Snoowrap({
   password: process.env.REDDIT_PASS,
 });
 
-r.config({ continueAfterRatelimitError: true });
-
 const commentStream = new CommentStream(r, {
   subreddit: "bottesting",
   limit: 100,
@@ -28,7 +27,9 @@ const nbaApi = new NbaApi();
 
 const startTime = Date.now();
 
-console.log(`Reddit bot started at ${new Date(startTime)}...`);
+console.log(
+  chalk.greenBright(`Reddit bot started at ${new Date(startTime)}...`)
+);
 
 commentStream.on("item", async (comment) => {
   let isForBot =
@@ -37,7 +38,6 @@ commentStream.on("item", async (comment) => {
       comment.body.toLowerCase().includes(`u/${process.env.REDDIT_USER}`));
 
   if (isForBot) {
-    console.log("it shouldn't get here");
     try {
       const averages = await nbaApi.getAverages(comment.body);
       const message = getMessage(averages);
@@ -47,4 +47,21 @@ commentStream.on("item", async (comment) => {
       console.error(error);
     }
   }
+});
+
+process.on("unhandledRejection", (err) => {
+  if (err.message.includes("ETIMEDOUT")) {
+    console.log(
+      `A request timed out at ${new Date().toLocaleString(
+        "en-US"
+      )} due to network; polling will continue.`
+    );
+  }
+});
+
+process.on("SIGINT", () => {
+  console.log(
+    chalk.redBright(`Reddit bot stopped at ${new Date(startTime)}...`)
+  );
+  process.exit(0);
 });

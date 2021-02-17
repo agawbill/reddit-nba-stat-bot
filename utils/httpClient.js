@@ -7,7 +7,7 @@ class HttpClient {
 
   async get(params) {
     try {
-      const url = urlConstructer(this.baseUrl, params);
+      const url = urlConstructor(this.baseUrl, params);
       const response = await axios.get(url);
       return response.data;
     } catch (error) {
@@ -16,7 +16,7 @@ class HttpClient {
   }
 }
 
-const urlConstructer = (baseUrl, params) => {
+const urlConstructor = (baseUrl, params) => {
   let urlString = baseUrl;
 
   if (Array.isArray(params)) {

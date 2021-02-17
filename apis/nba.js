@@ -120,7 +120,6 @@ export class NbaApi {
       const { foundPlayers, playersNotFound } = await this.getPlayers(players);
 
       for (const player of foundPlayers) {
-        console.log(player);
         let foundAverage = await this.getAverage(
           { id: player.id, name: `${player.first_name} ${player.last_name}` },
           stats,
