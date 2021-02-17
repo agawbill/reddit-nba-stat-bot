@@ -28,7 +28,7 @@ const nbaApi = new NbaApi();
 const startTime = Date.now();
 
 console.log(
-  chalk.greenBright(`Reddit bot started at ${new Date(startTime)}...`)
+  chalk.greenBright(`Reddit bot started at ${new Date(startTime)}...\n `)
 );
 
 commentStream.on("item", async (comment) => {
@@ -41,8 +41,13 @@ commentStream.on("item", async (comment) => {
     try {
       const averages = await nbaApi.getAverages(comment.body);
       const message = getMessage(averages);
-      console.log(message);
       comment.reply(message);
+      console.log(
+        chalk.blueBright("Replied to ") +
+          chalk.blueBright.underline(`${comment.author.name}`) +
+          chalk.blueBright(": ") +
+          `${message} \n`
+      );
     } catch (error) {
       console.error(error);
     }
@@ -52,16 +57,18 @@ commentStream.on("item", async (comment) => {
 process.on("unhandledRejection", (err) => {
   if (err.message.includes("ETIMEDOUT")) {
     console.log(
-      `A request timed out at ${new Date().toLocaleString(
-        "en-US"
-      )} due to network; polling will continue.`
+      chalk.yellow(
+        `A request timed out at ${new Date().toLocaleString(
+          "en-US"
+        )} due to network; polling will continue. \n`
+      )
     );
   }
 });
 
 process.on("SIGINT", () => {
   console.log(
-    chalk.redBright(`Reddit bot stopped at ${new Date(startTime)}...`)
+    chalk.redBright(`\nReddit bot stopped at ${new Date(startTime)}...`)
   );
   process.exit(0);
 });
