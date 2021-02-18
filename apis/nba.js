@@ -125,7 +125,7 @@ export class NbaApi {
           stats,
           date
         );
-        if (foundAverage && foundAverage.stats.length > 1) {
+        if (foundAverage && foundAverage.stats.length > 0) {
           foundAverages = [...foundAverages, foundAverage];
         }
       }

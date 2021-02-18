@@ -125,6 +125,8 @@ const messageConstructor = (type, data) => {
         }
       });
       break;
+    case "headToHead":
+      break;
     default:
       break;
   }
