@@ -73,8 +73,9 @@ export class NbaApi {
     };
   }
 
-  async getAverage(player, stats, date) {
+  async getAverages(player, stats, date) {
     let allStats;
+    let isHeadToHead = false;
     let matchingStats = [];
 
     const { validStats, invalidStats } = stats;
@@ -98,6 +99,7 @@ export class NbaApi {
           }
         }
       } else {
+        isHeadToHead = true;
         for (const key in allStats) {
           const stat = allStats[key];
           matchingStats = [...matchingStats, { name: key, value: stat }];
@@ -106,13 +108,14 @@ export class NbaApi {
     }
 
     return {
+      isHeadToHead,
       name: player.name,
       stats: matchingStats,
       invalidStats: invalidStats.filter((stat) => stat !== ""),
     };
   }
 
-  async getAverages(body) {
+  async getStats(body) {
     let foundAverages = [];
     const { stats, players, date, isValid } = getValues(body);
 
@@ -120,7 +123,7 @@ export class NbaApi {
       const { foundPlayers, playersNotFound } = await this.getPlayers(players);
 
       for (const player of foundPlayers) {
-        let foundAverage = await this.getAverage(
+        let foundAverage = await this.getAverages(
           { id: player.id, name: `${player.first_name} ${player.last_name}` },
           stats,
           date

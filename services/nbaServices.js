@@ -45,14 +45,20 @@ export const getMessage = (data) => {
   }
 
   if (foundAverages.length > 0 && playersNotFound.length > 0) {
-    const foundMessage = messageConstructor("stats", foundAverages);
+    const foundMessage = foundAverages.isHeadToHead
+      ? messageConstructor("headToHead", foundAverages)
+      : messageConstructor("stats", foundAverages);
     const notFoundMessage = messageConstructor(
       "playersNotFound",
       playersNotFound
     );
-    return `${foundMessage} ${notFoundMessage}`;
+    return isHeadToHead
+      ? `${notFoundMessage} \n ${foundMessage}`
+      : `${foundMessage} ${notFoundMessage}`;
   } else if (foundAverages.length > 0) {
-    const foundMessage = messageConstructor("stats", foundAverages);
+    const foundMessage = isHeadToHead
+      ? messageConstructor("headToHead", foundAverages)
+      : messageConstructor("stats", foundAverages);
     return foundMessage;
   } else if (playersNotFound.length > 0) {
     const notFoundMessage = messageConstructor(
@@ -126,6 +132,20 @@ const messageConstructor = (type, data) => {
       });
       break;
     case "headToHead":
+      const statHeaders = data.player[0].stats
+        .map((stat) => `${stat.name} |`)
+        .join("");
+      const headers = "| Player | " + statHeaders;
+      const formatColumns =
+        "|:--:|" + data.player[0].stats.map((stat) => ":--:|").join("");
+      const columns = data
+        .map((player) => {
+          let [firstName, lastName] = player.name.split(" ");
+          const stats = player.stats.map((stat) => `${stat.value} |`);
+          return `|${firstName} ${lastName}| ${stats}\n`;
+        })
+        .join("");
+      message = `${headers}\n${formatColumns}\n${columns}`;
       break;
     default:
       break;
@@ -148,6 +168,28 @@ const validateRequest = (indexes) => {
   }
 
   return isValid;
+};
+
+const mapPlayers = (names) => {
+  let players = [];
+
+  names.forEach((name) => {
+    name = name.trim();
+    if (!name.match(/^[a-zA-Z]/)) {
+      name = name.slice(1);
+    }
+    if (!name.match(/[a-zA-Z]$/)) {
+      name = name.slice(0, -1);
+    }
+    let fullName = name.trim().split(" ");
+    const [firstName, lastName] = [
+      fullName[0].trim(),
+      fullName.slice(1).join(" ").trim(),
+    ];
+    players = [...players, { firstName, lastName }];
+  });
+
+  return players;
 };
 
 const standardizeStats = (stats) => {
@@ -573,6 +615,7 @@ const standardizeStats = (stats) => {
         standardizedStats = [...standardizedStats, "ft_pct"];
         break;
       case "all":
+      case "head to head":
       case "all stats":
       case "all statistics":
         standardizedStats = [...standardizedStats, "all"];
@@ -589,26 +632,4 @@ const standardizeStats = (stats) => {
       (stat) => stat !== null || stat.trim() !== ""
     ),
   };
-};
-
-const mapPlayers = (names) => {
-  let players = [];
-
-  names.forEach((name) => {
-    name = name.trim();
-    if (!name.match(/^[a-zA-Z]/)) {
-      name = name.slice(1);
-    }
-    if (!name.match(/[a-zA-Z]$/)) {
-      name = name.slice(0, -1);
-    }
-    let fullName = name.trim().split(" ");
-    const [firstName, lastName] = [
-      fullName[0].trim(),
-      fullName.slice(1).join(" ").trim(),
-    ];
-    players = [...players, { firstName, lastName }];
-  });
-
-  return players;
 };

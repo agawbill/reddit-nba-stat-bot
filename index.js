@@ -39,7 +39,7 @@ commentStream.on("item", async (comment) => {
 
   if (isForBot) {
     try {
-      const averages = await nbaApi.getAverages(comment.body);
+      const averages = await nbaApi.getStats(comment.body);
       const message = getMessage(averages);
       comment.reply(message);
       console.log(
