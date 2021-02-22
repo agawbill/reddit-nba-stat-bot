@@ -138,8 +138,7 @@ const messageConstructor = (type, data) => {
         .map((stat) => `| **${stat.name}** `)
         .join("");
       const headers = "**Player** " + statHeaders;
-      const formatColumns =
-        ":--" + data[0].stats.map((stat) => "|:-:").join("");
+      const formatColumns = ":--" + data[0].stats.map(() => "|:-:").join("");
       const topStats = calculateTopStats(data);
       const columns = data
         .map((player) => {
