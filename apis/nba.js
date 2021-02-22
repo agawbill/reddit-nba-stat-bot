@@ -101,8 +101,10 @@ export class NbaApi {
       } else {
         isHeadToHead = true;
         for (const key in allStats) {
-          const stat = allStats[key];
-          matchingStats = [...matchingStats, { name: key, value: stat }];
+          if (key !== "player_id") {
+            const stat = allStats[key];
+            matchingStats = [...matchingStats, { name: key, value: stat }];
+          }
         }
       }
     }

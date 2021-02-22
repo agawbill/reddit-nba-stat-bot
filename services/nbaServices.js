@@ -29,6 +29,7 @@ export const getValues = (body) => {
       isValid: true,
     };
   }
+
   return { isValid: false };
 };
 
@@ -45,18 +46,18 @@ export const getMessage = (data) => {
   }
 
   if (foundAverages.length > 0 && playersNotFound.length > 0) {
-    const foundMessage = foundAverages.isHeadToHead
+    const foundMessage = foundAverages[0].isHeadToHead
       ? messageConstructor("headToHead", foundAverages)
       : messageConstructor("stats", foundAverages);
     const notFoundMessage = messageConstructor(
       "playersNotFound",
       playersNotFound
     );
-    return isHeadToHead
-      ? `${notFoundMessage} \n ${foundMessage}`
+    return foundAverages[0].isHeadToHead
+      ? `${notFoundMessage} \n\n ${foundMessage}`
       : `${foundMessage} ${notFoundMessage}`;
   } else if (foundAverages.length > 0) {
-    const foundMessage = isHeadToHead
+    const foundMessage = foundAverages[0].isHeadToHead
       ? messageConstructor("headToHead", foundAverages)
       : messageConstructor("stats", foundAverages);
     return foundMessage;
@@ -73,6 +74,7 @@ export const getMessage = (data) => {
 
 const messageConstructor = (type, data) => {
   let message = "";
+
   switch (type) {
     case "playersNotFound":
       message = "Sorry, I couldn't find information regarding ";
@@ -132,17 +134,24 @@ const messageConstructor = (type, data) => {
       });
       break;
     case "headToHead":
-      const statHeaders = data.player[0].stats
-        .map((stat) => `${stat.name} |`)
+      const statHeaders = data[0].stats
+        .map((stat) => `| **${stat.name}** `)
         .join("");
-      const headers = "| Player | " + statHeaders;
+      const headers = "**Player** " + statHeaders;
       const formatColumns =
-        "|:--:|" + data.player[0].stats.map((stat) => ":--:|").join("");
+        ":--" + data[0].stats.map((stat) => "|:-:").join("");
+      const topStats = calculateTopStats(data);
       const columns = data
         .map((player) => {
           let [firstName, lastName] = player.name.split(" ");
-          const stats = player.stats.map((stat) => `${stat.value} |`);
-          return `|${firstName} ${lastName}| ${stats}\n`;
+          const stats = player.stats
+            .map((stat) =>
+              stat.value === topStats[stat.name]
+                ? `| **${stat.value}** `
+                : `| ${stat.value} `
+            )
+            .join("");
+          return `**${firstName} ${lastName}** ${stats}\n `;
         })
         .join("");
       message = `${headers}\n${formatColumns}\n${columns}`;
@@ -150,7 +159,26 @@ const messageConstructor = (type, data) => {
     default:
       break;
   }
+
   return message;
+};
+
+const calculateTopStats = (data) => {
+  let baseStats = {};
+
+  data.forEach((player) => {
+    player.stats.forEach((stat) => {
+      let baseStatKeys = Object.keys(baseStats);
+      if (baseStatKeys.indexOf(stat.name) === -1) {
+        baseStats = { ...baseStats, [stat.name]: stat.value };
+      } else {
+        if (baseStats[stat.name] < stat.value)
+          baseStats = { ...baseStats, [stat.name]: stat.value };
+      }
+    });
+  });
+
+  return baseStats;
 };
 
 const validateRequest = (indexes) => {
