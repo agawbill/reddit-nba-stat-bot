@@ -34,7 +34,7 @@ export const getValues = (body) => {
 };
 
 export const getMessage = (data) => {
-  const { foundAverages, playersNotFound, isValid } = data;
+  const { isHeadToHead, foundAverages, playersNotFound, isValid } = data;
 
   if (!isValid) {
     return (
@@ -51,18 +51,18 @@ export const getMessage = (data) => {
   }
 
   if (foundAverages.length > 0 && playersNotFound.length > 0) {
-    const foundMessage = foundAverages[0].isHeadToHead
+    const foundMessage = isHeadToHead
       ? messageConstructor("headToHead", foundAverages)
       : messageConstructor("stats", foundAverages);
     const notFoundMessage = messageConstructor(
       "playersNotFound",
       playersNotFound
     );
-    return foundAverages[0].isHeadToHead
+    return isHeadToHead
       ? `${notFoundMessage} \n\n ${foundMessage}`
       : `${foundMessage} ${notFoundMessage}`;
   } else if (foundAverages.length > 0) {
-    const foundMessage = foundAverages[0].isHeadToHead
+    const foundMessage = isHeadToHead
       ? messageConstructor("headToHead", foundAverages)
       : messageConstructor("stats", foundAverages);
     return foundMessage;
