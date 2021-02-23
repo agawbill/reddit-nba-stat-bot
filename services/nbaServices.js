@@ -46,7 +46,7 @@ export const getMessage = (data) => {
       " for a group of players. This will return results in a table format, and the column value for the player with" +
       " the best (greatest) statistic category will be highlighted as bold when compared to the other players in the query." +
       "\n\nFor more detailed information, you can read" +
-      " [this post](https://www.reddit.com/user/Negative_Vehicle_51/comments/lpzau6/redditbot_instructions/)"
+      " [this post](https://www.reddit.com/user/Negative_Vehicle_51/comments/lpzau6/redditbot_instructions/)."
     );
   }
 
