@@ -45,6 +45,8 @@ export const getMessage = (data) => {
       "\n\nYou can also search for all the season averages for a particular player, or head to head statistics" +
       " for a group of players. This will return results in a table format, and the column value for the player with" +
       " the best (greatest) statistic category will be highlighted as bold when compared to the other players in the query." +
+      " To trigger head to head comparisons, or return all the statistics for a particular player, the user must enter" +
+      " 'all' or 'head to head' for the 'stats' parameter. Like the regular 'stats' parameter, it must be preceded by the word 'find'." +
       "\n\nFor more detailed information, you can read" +
       " [this post](https://www.reddit.com/user/Negative_Vehicle_51/comments/lpzau6/redditbot_instructions/)."
     );
