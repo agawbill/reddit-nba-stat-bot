@@ -39,14 +39,14 @@ export const getMessage = (data) => {
   if (!isValid) {
     return (
       "Sorry, I wasn't able to understand your request." +
-      " Please make sure you ask your question in the following format:" +
+      " Please make sure you ask your question in the following format: " +
       "'Find {stats here, separated by commas} for {player full names here, separated by commas}'." +
       " Optionally, you can add 'in {year of season here}' to the end of that query to get stats for a specific season." +
-      "\nYou can also search for all the season averages for a particular player, or head to head statistics " +
-      "for a group of players. This will return results in a table format, and the column value for the player with" +
-      "the best (greatest) statistic category will be highlighted as bold when compared to the other players in the query." +
-      "\nFor more detailed information, you can read" +
-      "[this post](https://www.reddit.com/user/Negative_Vehicle_51/comments/lpzau6/redditbot_instructions/)"
+      "\n\nYou can also search for all the season averages for a particular player, or head to head statistics" +
+      " for a group of players. This will return results in a table format, and the column value for the player with" +
+      " the best (greatest) statistic category will be highlighted as bold when compared to the other players in the query." +
+      "\n\nFor more detailed information, you can read" +
+      " [this post](https://www.reddit.com/user/Negative_Vehicle_51/comments/lpzau6/redditbot_instructions/)"
     );
   }
 
