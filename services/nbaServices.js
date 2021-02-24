@@ -62,7 +62,7 @@ export const getMessage = (data) => {
     );
     return isHeadToHead
       ? `${notFoundMessage} \n\n ${foundMessage}`
-      : `${foundMessage} ${notFoundMessage}`;
+      : `${foundMessage}\n\n${notFoundMessage}`;
   } else if (foundAverages.length > 0) {
     const foundMessage = isHeadToHead
       ? messageConstructor("headToHead", foundAverages)
@@ -75,7 +75,7 @@ export const getMessage = (data) => {
     );
     return notFoundMessage;
   } else {
-    return "Sorry. I couldn't find any statistics matching you query. Check your request and try again";
+    return "Sorry. I couldn't find any statistics matching you query. Check your request and try again. ";
   }
 };
 
@@ -84,26 +84,36 @@ const messageConstructor = (type, data) => {
 
   switch (type) {
     case "playersNotFound":
-      message = "Sorry, I couldn't find information regarding ";
+      message = "I couldn't find information regarding ";
       data.forEach((player, index) => {
-        let firstName = player.firstName
-          ? player.firstName[0].toUpperCase() + player.firstName.slice(1)
-          : "";
-        let lastName = player.lastName
-          ? player.lastName[0].toUpperCase() + player.lastName.slice(1)
-          : "";
+        let firstName =
+          player.firstName !== ""
+            ? player.firstName[0].toUpperCase() + player.firstName.slice(1)
+            : null;
+        let lastName =
+          player.lastName !== ""
+            ? player.lastName[0].toUpperCase() + player.lastName.slice(1)
+            : null;
+        let name =
+          firstName && lastName
+            ? `${firstName} ${lastName}`
+            : `${firstName || lastName}`;
         if (data.length > 1) {
           if (index === data.length - 1) {
-            message += `and ${firstName} ${lastName}.`;
+            message += `and ${name}. `;
+          } else {
+            message += `${name}, `;
           }
-          message += `${firstName} ${lastName},`;
         } else {
-          message += `${firstName} ${lastName}.`;
+          message += `${name}. `;
         }
       });
+      message +=
+        "Please check your spelling or make sure the players are active in the year that you're searching. ";
       break;
     case "stats":
       message = "I found ";
+      let invalidStats;
       data.forEach((player) => {
         if (player.stats.length > 0) {
           let [firstName, lastName] = player.name.split(" ");
@@ -120,25 +130,26 @@ const messageConstructor = (type, data) => {
           });
           message += validStats.join("");
         }
-        const invalidStats =
+        invalidStats =
           player.invalidStats.length > 0
             ? player.invalidStats.map((stat, index) => {
                 if (player.invalidStats.length > 1) {
                   if (index === player.invalidStats.length - 1) {
-                    return `and ${stat}.`;
+                    return `and ${stat}. `;
                   }
                   return `${stat}, `;
                 } else {
-                  return `${stat}.`;
+                  return `${stat}. `;
                 }
               })
             : null;
-        if (invalidStats) {
-          message += " I was unable to find the following stats: ";
-          message += invalidStats.join("");
-          message += " Are you sure you spelled them correctly?";
-        }
       });
+      if (invalidStats) {
+        message += "I was unable to find the following stats: ";
+        message += invalidStats.join("");
+        message +=
+          "Are you sure you spelled them correctly, and that they're separated by commas? ";
+      }
       break;
     case "headToHead":
       const statHeaders = data[0].stats
@@ -662,8 +673,6 @@ const standardizeStats = (stats) => {
 
   return {
     validStats: standardizedStats,
-    invalidStats: notFoundStats.filter(
-      (stat) => stat !== null || stat.trim() !== ""
-    ),
+    invalidStats: notFoundStats.filter((stat) => stat !== null || stat !== ""),
   };
 };

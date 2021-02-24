@@ -110,7 +110,7 @@ export class NbaApi {
     return {
       name: player.name,
       stats: matchingStats,
-      invalidStats: invalidStats.filter((stat) => stat !== ""),
+      invalidStats: invalidStats,
     };
   }
 
@@ -119,23 +119,27 @@ export class NbaApi {
     const { stats, players, date, isValid } = getValues(body);
 
     if (isValid) {
-      const { foundPlayers, playersNotFound } = await this.getPlayers(players);
+      let { foundPlayers, playersNotFound } = await this.getPlayers(players);
 
       for (const player of foundPlayers) {
-        let foundAverage = await this.getAverages(
+        let average = await this.getAverages(
           { id: player.id, name: `${player.first_name} ${player.last_name}` },
           stats,
           date
         );
-        if (foundAverage && foundAverage.stats.length > 0) {
-          foundAverages = [...foundAverages, foundAverage];
+
+        if (average && average.stats.length > 0) {
+          foundAverages = [...foundAverages, average];
+        } else if (average && average.stats.length < 1) {
+          playersNotFound = [
+            ...playersNotFound,
+            { firstName: player.first_name, lastName: player.last_name },
+          ];
         }
       }
 
       return {
-        isHeadToHead:
-          stats.validStats.includes("all") ||
-          stats.validStats.includes("head to head"),
+        isHeadToHead: stats.validStats.includes("all"),
         foundAverages,
         playersNotFound,
         isValid,
