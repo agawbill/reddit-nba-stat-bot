@@ -189,8 +189,9 @@ const calculateTopStats = (data) => {
       if (baseStatKeys.indexOf(stat.name) === -1) {
         baseStats = { ...baseStats, [stat.name]: stat.value };
       } else {
-        if (baseStats[stat.name] < stat.value)
+        if (baseStats[stat.name] < stat.value) {
           baseStats = { ...baseStats, [stat.name]: stat.value };
+        }
       }
     });
   });
