@@ -10,7 +10,7 @@ const { CommentStream } = Snoostorm;
 dotenv.config();
 
 const r = new Snoowrap({
-  userAgent: "video-bot",
+  userAgent: process.env.USER_AGENT,
   clientId: process.env.CLIENT_ID,
   clientSecret: process.env.CLIENT_SECRET,
   username: process.env.REDDIT_USER,
@@ -18,9 +18,9 @@ const r = new Snoowrap({
 });
 
 const commentStream = new CommentStream(r, {
-  subreddit: "bottesting",
-  limit: 100,
-  pollTime: 2000,
+  subreddit: process.env.SUBREDDIT,
+  limit: parseInt(process.env.POLL_LIMIT),
+  pollTime: parseInt(process.env.POLL_TIME),
 });
 
 const nbaApi = new NbaApi();
