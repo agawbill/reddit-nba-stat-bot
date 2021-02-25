@@ -48,7 +48,7 @@ export const getMessage = (data) => {
       " To trigger head to head comparisons, or return all the statistics for a particular player, the user must enter" +
       " 'all' or 'head to head' for the 'stats' parameter. Like the regular 'stats' parameter, it must be preceded by the word 'find'." +
       "\n\nFor more detailed information, you can read" +
-      " [this post](https://www.reddit.com/user/Negative_Vehicle_51/comments/lpzau6/redditbot_instructions/)."
+      " [this post](https://www.reddit.com/user/FindNbaStats/comments/lsg4rg/findnbastats_bot_overview_and_instructions/)."
     );
   }
 
@@ -156,7 +156,7 @@ const messageConstructor = (type, data) => {
         .map((stat) => `| **${stat.name}** `)
         .join("");
       const headers = "**Player** " + statHeaders;
-      const formatColumns = ":--" + data[0].stats.map(() => "|:-:").join("");
+      const formatColumns = ":-----" + data[0].stats.map(() => "|:-:").join("");
       const topStats = calculateTopStats(data);
       const columns = data
         .map((player) => {
