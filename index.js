@@ -4,6 +4,7 @@ import Snoowrap from "snoowrap";
 import Snoostorm from "snoostorm";
 import { NbaApi } from "./apis/index.js";
 import { getMessage } from "./services/nbaServices.js";
+import { checkComment } from "./services/botServices.js";
 
 const { CommentStream } = Snoostorm;
 
@@ -32,10 +33,7 @@ console.log(
 );
 
 commentStream.on("item", async (comment) => {
-  let isForBot =
-    comment.created_utc > startTime / 1000 &&
-    (comment.body.toLowerCase().includes(`/u/${process.env.REDDIT_USER}`) ||
-      comment.body.toLowerCase().includes(`u/${process.env.REDDIT_USER}`));
+  const isForBot = checkComment(comment, startTime);
 
   if (isForBot) {
     try {

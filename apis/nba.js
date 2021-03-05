@@ -110,7 +110,7 @@ export class NbaApi {
     return {
       name: player.name,
       stats: matchingStats,
-      invalidStats: invalidStats,
+      invalidStats,
     };
   }
 
