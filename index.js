@@ -67,6 +67,7 @@ process.on("unhandledRejection", (err) => {
 });
 
 process.on("SIGINT", () => {
+  commentStream.end();
   console.log(
     chalk.redBright(`\nReddit bot stopped at ${new Date(startTime)}...`)
   );
