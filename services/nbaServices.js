@@ -8,6 +8,13 @@ export const getValues = (body) => {
   const playersIndex = values.indexOf("for");
   const dateIndex = values.indexOf("in");
 
+  console.log("body of values", body);
+  console.log("values", values);
+  console.log("username index", usernameIndex);
+  console.log("stats index", statsIndex);
+  console.log("players index", playersIndex);
+  console.log("date index", dateIndex);
+
   if (validateRequest([usernameIndex, statsIndex, playersIndex, dateIndex])) {
     const stats = values.slice(statsIndex + 1, playersIndex);
     const names = values.slice(
@@ -203,13 +210,19 @@ const validateRequest = (indexes) => {
   const [usernameIndex, statsIndex, playersIndex, dateIndex] = indexes;
   let isValid = true;
 
+  console.log(indexes);
+
   if (usernameIndex === -1 || statsIndex === -1 || playersIndex === -1) {
+    console.log("it got to first if statement");
     isValid = false;
   }
 
   if (usernameIndex < statsIndex < playersIndex) {
+    console.log("it got to second if statement");
     if (dateIndex > -1) {
+      console.log("it got to third if statement");
       isValid = dateIndex > playersIndex;
+      console.log("isValid in third if statement", isValid);
     }
   }
 
