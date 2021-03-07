@@ -1,19 +1,13 @@
 export const getValues = (body) => {
   const values = body.toLowerCase().split(" ");
-  const usernameIndex =
-    values.indexOf(`/u/${process.env.REDDIT_USER}`) === -1
-      ? values.indexOf(`u/${process.env.REDDIT_USER}`)
-      : values.indexOf(`/u/${process.env.REDDIT_USER}`);
+  const usernameIndex = values.findIndex(
+    (value) =>
+      value.includes(`u/${process.env.REDDIT_USER}`) ||
+      value.includes(`/u/${process.env.REDDIT_USER}`)
+  );
   const statsIndex = values.indexOf("find");
   const playersIndex = values.indexOf("for");
   const dateIndex = values.indexOf("in");
-
-  console.log("body of values", body);
-  console.log("values", values);
-  console.log("username index", usernameIndex);
-  console.log("stats index", statsIndex);
-  console.log("players index", playersIndex);
-  console.log("date index", dateIndex);
 
   if (validateRequest([usernameIndex, statsIndex, playersIndex, dateIndex])) {
     const stats = values.slice(statsIndex + 1, playersIndex);
@@ -210,19 +204,11 @@ const validateRequest = (indexes) => {
   const [usernameIndex, statsIndex, playersIndex, dateIndex] = indexes;
   let isValid = true;
 
-  console.log(indexes);
-
   if (usernameIndex === -1 || statsIndex === -1 || playersIndex === -1) {
-    console.log("it got to first if statement");
     isValid = false;
-  }
-
-  if (usernameIndex < statsIndex < playersIndex) {
-    console.log("it got to second if statement");
+  } else if (usernameIndex < statsIndex < playersIndex) {
     if (dateIndex > -1) {
-      console.log("it got to third if statement");
       isValid = dateIndex > playersIndex;
-      console.log("isValid in third if statement", isValid);
     }
   }
 
