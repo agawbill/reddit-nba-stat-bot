@@ -245,7 +245,6 @@ const formatDate = (date) => {
 
   for (let i = 0; i < date.length; i++) {
     const el = parseInt(date[i]);
-    console.log(el);
     if (!isNaN(el)) {
       formattedDate += el;
     }
