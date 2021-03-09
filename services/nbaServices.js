@@ -19,7 +19,10 @@ export const getValues = (body) => {
       names.length > 1 ? names.join(" ").split(",") : names
     );
     const date =
-      dateIndex === -1 ? null : values.slice(dateIndex + 1, values.length)[0];
+      dateIndex === -1
+        ? null
+        : formatDate(values.slice(dateIndex + 1, values.length)[0]);
+
     return {
       stats:
         stats.length > 1
@@ -235,6 +238,19 @@ const mapPlayers = (names) => {
   });
 
   return players;
+};
+
+const formatDate = (date) => {
+  let formattedDate = "";
+
+  for (let i = 0; i < date.length; i++) {
+    const el = parseInt(date[i]);
+    console.log(el);
+    if (!isNaN(el)) {
+      formattedDate += el;
+    }
+  }
+  return formattedDate;
 };
 
 const standardizeStats = (stats) => {
